@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+data/*.db*
+
+test_router_tmp.py

@@ -1,0 +1,1 @@
+# EDITH Core Module

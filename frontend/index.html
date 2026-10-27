@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EDITH Command Center — Enhanced Digital Intelligence Technology Hub. Your local AI assistant powered by Ollama and faster-whisper.">
+    <title>EDITH — Command Center</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  Background Effects                        -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="ambient-bg">
+        <div class="ambient-orb ambient-orb-1"></div>
+        <div class="ambient-orb ambient-orb-2"></div>
+        <div class="ambient-orb ambient-orb-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  Command Center Layout                     -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="command-center">
+
+        <!-- ─── Top Bar ─── -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle" id="menuToggle" title="Toggle panels">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                    </svg>
+                </button>
+                <div class="logo-mark" id="logoIcon">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.4"/>
+                        <circle cx="20" cy="20" r="12" stroke="url(#logoGrad)" stroke-width="1.2" opacity="0.7"/>
+                        <circle cx="20" cy="20" r="5" fill="url(#logoGrad)"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#00e5ff"/>
+                                <stop offset="100%" stop-color="#2979ff"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <div class="logo-title">EDITH</div>
+                    <div class="logo-sub">Command Center</div>
+                </div>
+            </div>
+
+            <div class="topbar-center">
+                <div class="voice-status-label" id="voiceStatusLabel" data-state="idle">
+                    SYSTEM READY
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <span class="model-badge" id="modelBadge">Loading…</span>
+                <button class="topbar-btn" id="settingsBtn" title="Settings">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+
+        <!-- ─── Left Panel: Conversation ─── -->
+        <aside class="panel-left" id="panelLeft">
+            <div class="panel-header">
+                <span class="panel-title">Conversation</span>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <button class="panel-btn" id="sessionsToggle" title="Sessions">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12h18M3 6h18M3 18h18"/>
+                        </svg>
+                    </button>
+                    <button class="panel-btn" id="deleteChatBtn" title="Delete chat">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3,6 5,6 21,6"/>
+                            <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6M8,6V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sessions Drawer (collapsible) -->
+            <div class="sessions-drawer" id="sessionsDrawer">
+                <div class="sessions-drawer-inner">
+                    <button class="new-chat-btn" id="newChatBtn">
+                        <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        New Chat
+                    </button>
+                    <div class="sessions-list" id="sessionsList">
+                        <!-- Sessions rendered dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-logo">
+                        <svg viewBox="0 0 60 60" fill="none">
+                            <circle cx="30" cy="30" r="27" stroke="url(#welcGrad)" stroke-width="1.5" opacity="0.3">
+                                <animate attributeName="r" values="27;29;27" dur="3s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="30" cy="30" r="18" stroke="url(#welcGrad)" stroke-width="1" opacity="0.5">
+                                <animate attributeName="r" values="18;20;18" dur="2.5s" repeatCount="indefinite"/>
+                            </circle>
+                            <circle cx="30" cy="30" r="7" fill="url(#welcGrad)">
+                                <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <defs>
+                                <linearGradient id="welcGrad" x1="0" y1="0" x2="60" y2="60">
+                                    <stop offset="0%" stop-color="#00e5ff"/>
+                                    <stop offset="100%" stop-color="#2979ff"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h2 class="welcome-title">Hello, I'm <span class="gradient-text">EDITH</span></h2>
+                    <p class="welcome-subtitle">Your Enhanced Digital Intelligence Technology Hub</p>
+                    <div class="welcome-suggestions">
+                        <button class="suggestion-chip" data-message="Set my volume to 50%">🔊 Volume 50%</button>
+                        <button class="suggestion-chip" data-message="Search the web for latest AI news">🌐 AI News</button>
+                        <button class="suggestion-chip" data-message="Open google.com in my browser">🌍 Open Google</button>
+                        <button class="suggestion-chip" data-message="Find Python files on my Desktop">📂 Find files</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+
+        <!-- ─── Center Stage: Reactor Orb ─── -->
+        <section class="center-stage">
+            <div class="reactor-orb-container" id="reactorOrb" data-state="idle">
+                <!-- Core glow -->
+                <div class="reactor-core"></div>
+
+                <!-- Rotating rings -->
+                <div class="reactor-ring"></div>
+                <div class="reactor-ring reactor-ring-2"></div>
+                <div class="reactor-ring reactor-ring-3"></div>
+
+                <!-- Segmented ring (visible in processing/thinking) -->
+                <div class="reactor-segments">
+                    <div class="reactor-segment"></div>
+                    <div class="reactor-segment"></div>
+                    <div class="reactor-segment"></div>
+                    <div class="reactor-segment"></div>
+                </div>
+
+                <!-- Audio rings (visible in listening) -->
+                <div class="audio-rings">
+                    <div class="audio-ring"></div>
+                    <div class="audio-ring"></div>
+                    <div class="audio-ring"></div>
+                </div>
+
+                <!-- Waveform bars (visible in speaking) -->
+                <div class="wave-bars">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ─── Right Panel: System Status ─── -->
+        <aside class="panel-right" id="panelRight">
+            <div class="panel-header">
+                <span class="panel-title">System Status</span>
+            </div>
+            <div class="status-cards" id="statusCards">
+                <div class="status-card" id="statusMic">
+                    <div class="status-card-header">
+                        <span class="status-card-label">🎙 Microphone</span>
+                        <div class="status-dot-inline" id="statusMicDot"></div>
+                    </div>
+                    <div class="status-card-value" id="statusMicValue">Checking…</div>
+                </div>
+
+                <div class="status-card" id="statusWhisper">
+                    <div class="status-card-header">
+                        <span class="status-card-label">🗣 Whisper / STT</span>
+                        <div class="status-dot-inline" id="statusWhisperDot"></div>
+                    </div>
+                    <div class="status-card-value" id="statusWhisperValue">Checking…</div>
+                </div>
+
+                <div class="status-card" id="statusFFmpeg">
+                    <div class="status-card-header">
+                        <span class="status-card-label">🎞 FFmpeg</span>
+                        <div class="status-dot-inline" id="statusFFmpegDot"></div>
+                    </div>
+                    <div class="status-card-value" id="statusFFmpegValue">Checking…</div>
+                </div>
+
+                <div class="status-card" id="statusOllama">
+                    <div class="status-card-header">
+                        <span class="status-card-label">🧠 Ollama</span>
+                        <div class="status-dot-inline" id="statusOllamaDot"></div>
+                    </div>
+                    <div class="status-card-value" id="statusOllamaValue">Checking…</div>
+                </div>
+
+                <div class="status-card" id="statusTTS">
+                    <div class="status-card-header">
+                        <span class="status-card-label">🔊 TTS</span>
+                        <div class="status-dot-inline" id="statusTTSDot"></div>
+                    </div>
+                    <div class="status-card-value" id="statusTTSValue">Checking…</div>
+                </div>
+
+                <div class="status-card" id="statusConnection">
+                    <div class="status-card-header">
+                        <span class="status-card-label">⚡ WebSocket</span>
+                        <div class="status-dot-inline" id="statusConnectionDot"></div>
+                    </div>
+                    <div class="status-card-value" id="statusConnectionValue">Connecting…</div>
+                </div>
+            </div>
+        </aside>
+
+
+        <!-- ─── Bottom Bar: Controls ─── -->
+        <footer class="bottom-bar">
+            <div class="ptt-controls">
+                <button class="voice-toggle-btn enabled" id="ttsToggle" title="Toggle voice responses">
+                    🔈 Voice ON
+                </button>
+
+                <button class="cancel-btn" id="cancelBtn" title="Cancel recording">✕</button>
+
+                <button class="ptt-btn" id="voiceBtn" data-recording="false" title="Start English voice recording" aria-label="Start English voice recording">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <textarea
+                        id="chatInput"
+                        class="chat-input"
+                        placeholder="Type a command…"
+                        rows="1"
+                        autofocus
+                    ></textarea>
+                    <button class="send-btn" id="sendBtn" title="Send" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <p class="input-hint">EDITH runs locally with Ollama. Your data stays on your machine.</p>
+        </footer>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  Settings Modal                            -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="modal-close" id="settingsClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>LLM Model</label>
+                    <input type="text" id="settingModel" class="setting-input" placeholder="qwen3:8b" readonly>
+                </div>
+                <div class="setting-group">
+                    <label>Ollama URL</label>
+                    <input type="text" id="settingOllamaUrl" class="setting-input" placeholder="http://localhost:11434" readonly>
+                </div>
+                <div class="setting-group">
+                    <label>TTS Engine</label>
+                    <input type="text" id="settingTTS" class="setting-input" placeholder="pyttsx3" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/animations.js?v=3"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/voice.js"></script>
+    <script src="js/app.js?v=2"></script>
+</body>
+</html>
