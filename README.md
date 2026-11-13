@@ -5,10 +5,15 @@ An AI Cowork Assistant designed to run locally on your PC.
 EDITH is a local AI cowork assistant built to streamline daily tasks, provide intelligent assistance, and maintain productivity—all while keeping your data private and running locally on your hardware.
 
 🛠️ Tech Stack & Languages
+
 Python
+
 JavaScript
+
 CSS
+
 HTML
+
 PowerShell 
 
 📁 Repository Structure
