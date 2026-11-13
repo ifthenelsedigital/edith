@@ -34,8 +34,13 @@ PowerShell
 `memory/` - Local memory management and context handling.
 
 `tools/` - Built-in assistant tools and utilities.
+
 `voice/` - Voice recognition and text-to-speech modules.
+
 `tests/` - Test suites.
+
 `config.py` - Configuration settings.
+
 `main.py` - Main entry point to run the application.
+
 `run_edith.ps1` - PowerShell script for launching EDITH easily on Windows.
